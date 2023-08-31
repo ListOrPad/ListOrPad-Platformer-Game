@@ -75,12 +75,12 @@ public class PlayerMovement : MonoBehaviour
         {
             if (horizontalInput == 0)
             {
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 20, 35);
+                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 30, 35);
                 transform.localScale = new Vector2(-Mathf.Sign(transform.localScale.x), transform.localScale.y);
             }
             else
             {
-                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 8, 20);
+                body.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 20, 36);
             }
             wallJumpCooldown = 0;
         }
