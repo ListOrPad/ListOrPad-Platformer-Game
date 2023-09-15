@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Android.Types;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class EnemyProjectile : EnemyDamage
     [SerializeField] private float speed;
     [SerializeField] private float resetTime;
     private float lifeTime;
+    private HealthPickup healthPickup;
     public void ActivateProjectile()
     {
         lifeTime = 0;
@@ -28,7 +30,14 @@ public class EnemyProjectile : EnemyDamage
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
-        gameObject.SetActive(false); //when this hits any object deactivates arrow
+        if (collision.gameObject.tag == "Pickup")
+        {
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), healthPickup.GetComponent<Collider2D>());
+        }
+        else
+        {
+            base.OnTriggerEnter2D(collision);
+            gameObject.SetActive(false); //when this hits any object deactivates arrow
+        }
     }
 }
