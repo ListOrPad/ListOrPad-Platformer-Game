@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float damage;
     private float direction;
     private bool hit;
     private float lifeTime;
@@ -36,6 +37,11 @@ public class Projectile : MonoBehaviour
         hit = true;
         fireballCollider.enabled = false;
         animator.SetTrigger("explode");
+
+        if (collision.tag == "Enemy")
+        {
+            collision.GetComponent<Health>().TakeDamage(damage);
+        }
     }
 
     public void SetDirection(float direction)
