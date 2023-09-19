@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Enemy
   - Pickup
+  - Enemy Fireball
+  - Arrow
   layers:
   - Default
   - TransparentFX

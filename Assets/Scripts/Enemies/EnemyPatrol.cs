@@ -78,6 +78,7 @@ public class EnemyPatrol : MonoBehaviour
 
         //make enemy face direction
         enemy.localScale = new Vector3(Mathf.Abs(initScale.x) * direction, initScale.y, initScale.z);
+
         //Move in that direction
         enemy.position = new Vector3(enemy.position.x + Time.deltaTime + direction * speed, enemy.position.y, enemy.position.z);
     }

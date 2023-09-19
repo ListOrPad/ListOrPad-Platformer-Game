@@ -81,7 +81,7 @@ MonoBehaviour:
   leftEdge: {fileID: 3578142642063332359}
   rightEdge: {fileID: 3578142640465371765}
   enemy: {fileID: 3578142641825443291}
-  speed: 0.03
+  speed: 0.044
   animator: {fileID: 3578142641825443288}
   idleDuration: 1
 --- !u!1 &3578142642063332358
@@ -122,6 +122,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3578142641755093387}
     m_Modifications:
+    - target: {fileID: 8987251585020663409, guid: 00cd53576d54d824db74cfc64e7a7fe6, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a587e1c913636f4c812f857e5aa6c84, type: 3}
     - target: {fileID: 8987251585020663410, guid: 00cd53576d54d824db74cfc64e7a7fe6, type: 3}
       propertyPath: m_Name
       value: Knight

@@ -9,10 +9,14 @@ public class Health : MonoBehaviour
     public float CurrentHealth { get; private set; }
     private Animator animator;
     private bool dead;
+
     [Header("IFrames")]
     [SerializeField] private float iFramesDuration;
     [SerializeField] private int numberOfFlashes;
     private SpriteRenderer spriteRend;
+
+    [Header("Components")]
+    [SerializeField] private Behaviour[] components;
 
     private void Awake()
     {
@@ -36,21 +40,11 @@ public class Health : MonoBehaviour
             {
                 animator.SetTrigger("died");
 
-                //Player
-                if(GetComponent<PlayerMovement>() != null)
+                //deactivate all attached component classes 
+                foreach(Behaviour component in components)
                 {
-                    GetComponent<PlayerMovement>().enabled = false;
+                    component.enabled = false;
                 }
-                //Enemy
-                if(GetComponentInParent<EnemyPatrol>() != null)
-                {
-                    GetComponentInParent<EnemyPatrol>().enabled = false;
-                }
-                if(GetComponent<MeleeEnemy>() != null)
-                {
-                    GetComponent<MeleeEnemy>().enabled = false;
-                }
-
 
                 dead = true;
             }
