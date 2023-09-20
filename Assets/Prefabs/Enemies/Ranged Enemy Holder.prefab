@@ -1843,6 +1843,7 @@ GameObject:
   - component: {fileID: 8570998075240289625}
   - component: {fileID: 8570998075240289627}
   - component: {fileID: 8570998075240289624}
+  - component: {fileID: 8214634092701852638}
   m_Layer: 10
   m_Name: Dragon Warrior
   m_TagString: Enemy
@@ -1949,7 +1950,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.11114976, y: -0.570068}
@@ -1983,6 +1984,8 @@ MonoBehaviour:
   components:
   - {fileID: 8570998075240289624}
   - {fileID: 0}
+  deathSound: {fileID: 8300000, guid: b9ae641b0707ea14dbe200d8cc0b981c, type: 3}
+  hurtSound: {fileID: 8300000, guid: 49abfce9337f1a34fa86d75ae410a75c, type: 3}
 --- !u!114 &8570998075240289624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2015,3 +2018,17 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 512
+  fireballSound: {fileID: 8300000, guid: 19177cf58da091b4b974d4d1ea075fdb, type: 3}
+--- !u!114 &8214634092701852638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570998075240289605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45b9e675b99ae54083cf3343b2568cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1

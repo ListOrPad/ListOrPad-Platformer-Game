@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [Header ("health")]
+    [Header("health")]
     [SerializeField] private float startingHealth;
     public float CurrentHealth { get; private set; }
     private Animator animator;
@@ -14,9 +14,14 @@ public class Health : MonoBehaviour
     [SerializeField] private float iFramesDuration;
     [SerializeField] private int numberOfFlashes;
     private SpriteRenderer spriteRend;
+    private bool invulnerable;
 
     [Header("Components")]
     [SerializeField] private Behaviour[] components;
+
+    [Header("Sound")]
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip hurtSound;
 
     private void Awake()
     {
@@ -27,12 +32,18 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (invulnerable)
+        {
+            return;
+        }
+
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, startingHealth);
 
         if(CurrentHealth > 0)
         {
             animator.SetTrigger("hurt");
             StartCoroutine(Invulnerability());
+            SoundManager.Instance.PlaySound(hurtSound);
         }
         else
         {
@@ -47,6 +58,7 @@ public class Health : MonoBehaviour
                 }
 
                 dead = true;
+                SoundManager.Instance.PlaySound(deathSound);
             }
         }
     }
@@ -56,6 +68,8 @@ public class Health : MonoBehaviour
     }
     private IEnumerator Invulnerability()
     {
+        invulnerable = true;
+
         Physics2D.IgnoreLayerCollision(9, 10, true);
         for (int i = 0;i < numberOfFlashes; i++)
         {
@@ -65,5 +79,12 @@ public class Health : MonoBehaviour
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
         }
         Physics2D.IgnoreLayerCollision(9, 10, false);
+
+        invulnerable = false;
+    }
+
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 }
