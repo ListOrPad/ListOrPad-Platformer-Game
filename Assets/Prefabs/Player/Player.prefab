@@ -183,6 +183,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 25
   jumpPower: 30
+  coyoteTime: 0.25
+  extraJumps: 1
+  wallJumpX: 7000
+  wallJumpY: 1750
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
