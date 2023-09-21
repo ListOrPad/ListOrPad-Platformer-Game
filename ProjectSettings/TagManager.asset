@@ -9,6 +9,7 @@ TagManager:
   - Pickup
   - Enemy Fireball
   - Arrow
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
