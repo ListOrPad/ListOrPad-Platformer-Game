@@ -25,12 +25,39 @@ public class PlayerMovement : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip jumpSound;
 
+    [Header("Player")]
+    [SerializeField] private Transform player;
+
+    [HideInInspector] public bool IsFacingRight { get; set; }
     private Rigidbody2D body;
     private Animator animator;
     private BoxCollider2D boxCollider;
-    private float wallJumpCooldown;
     private float horizontalInput;
 
+    private bool IsGrounded
+    {
+        get
+        {
+            RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.01f, groundLayer);
+            return raycastHit.collider != null;
+        }
+    }
+    private bool OnWall
+    {
+        get
+        {
+            RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.01f, wallLayer);
+            return raycastHit.collider != null;
+        }
+    }
+
+    public bool CanAttack
+    {
+        get
+        {
+            return horizontalInput == 0 && IsGrounded && !OnWall;
+        }
+    }
 
     private void Awake()
     {
@@ -47,15 +74,17 @@ public class PlayerMovement : MonoBehaviour
         if (horizontalInput > 0.01f)
         {
             transform.localScale = Vector3.one;
+            IsFacingRight = true;
         }
         else if (horizontalInput < -0.01f)
         {
             transform.localScale = new Vector3(-1, 1, 1);
+            IsFacingRight = false;
         }
 
         //set animator parameters
         animator.SetBool("run", horizontalInput != 0);
-        animator.SetBool("grounded", IsGrounded());
+        animator.SetBool("grounded", IsGrounded);
 
         //Jump
         if (Input.GetKeyDown(KeyCode.Space))
@@ -69,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
             body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
         }
 
-        if (OnWall())
+        if (OnWall)
         {
             body.gravityScale = 0;
             body.velocity = Vector2.zero;
@@ -79,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             body.gravityScale = 7;
             body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
-            if (IsGrounded())
+            if (IsGrounded)
             {
                 //reset coyote counter when on the ground
                 coyoteCounter = coyoteTime;
@@ -96,20 +125,20 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         //if coyote counter is less then 0 and not on the wall and no extra jumps, dont do anything 
-        if (coyoteCounter <= 0 && !OnWall() && jumpCounter <= 0) 
+        if (coyoteCounter <= 0 && !OnWall && jumpCounter <= 0) 
         {
             return;
         }
 
         SoundManager.Instance.PlaySound(jumpSound);
 
-        if(OnWall())
+        if(OnWall)
         {
             WallJump();
         }
         else
         {
-            if(IsGrounded())
+            if(IsGrounded)
             {
                 body.velocity = new Vector2(body.velocity.x, jumpPower);
             }
@@ -138,23 +167,5 @@ public class PlayerMovement : MonoBehaviour
     private void WallJump()
     {
         body.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
-        wallJumpCooldown = 0;
-    }
-
-
-    private bool IsGrounded()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.01f, groundLayer);
-        return raycastHit.collider != null;
-    }
-    private bool OnWall()
-    {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.01f, wallLayer);
-        return raycastHit.collider != null;
-    }
-
-    public bool CanAttack()
-    {
-        return horizontalInput == 0 && IsGrounded() && !OnWall();
     }
 }
