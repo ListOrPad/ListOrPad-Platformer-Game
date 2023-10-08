@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private float attackCooldown;
-    private float cooldownTimer = Mathf.Infinity;
+    [SerializeField] private float attackCooldownFireball;
+    [SerializeField] private float attackCooldownSword;
+    private float cooldownTimerFireball = Mathf.Infinity;
+    private float cooldownTimerSword = Mathf.Infinity;
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject[] fireballs;
     [SerializeField] private AudioClip fireballSound;
+    [SerializeField] private AudioClip swordSound;
 
     private Animator animator;
     private PlayerMovement playerMovement;
@@ -21,18 +24,30 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButton(1) && cooldownTimer > attackCooldown && playerMovement.CanAttack)
+        if (Input.GetMouseButton(1) && cooldownTimerFireball > attackCooldownFireball && playerMovement.CanAttack)
         {
-            Attack();
+            FireballAttack();
         }
-        cooldownTimer += Time.deltaTime;
+        else if (Input.GetMouseButton(0) && cooldownTimerSword > attackCooldownSword && playerMovement.CanAttack)
+        {
+            SwordAttack();
+        }
+        cooldownTimerFireball += Time.deltaTime;
+        cooldownTimerSword += Time.deltaTime;
     }
 
-    private void Attack()
+    private void SwordAttack()
+    {
+        SoundManager.Instance.PlaySound(swordSound);
+        animator.SetTrigger("swordAttack");
+        cooldownTimerSword = 0;
+    }
+
+    private void FireballAttack()
     {
         SoundManager.Instance.PlaySound(fireballSound);
-        animator.SetTrigger("attack");
-        cooldownTimer = 0;
+        animator.SetTrigger("fireballAttack");
+        cooldownTimerFireball = 0;
 
         fireballs[FindFireball()].transform.position = firepoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
