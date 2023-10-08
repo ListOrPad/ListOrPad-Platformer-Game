@@ -53,7 +53,7 @@ public class SoundManager : MonoBehaviour
         //Assign the final value
         float finalVolume = currentVolume * baseVolume;
         source.volume = finalVolume;
-        PlayerPrefs.SetFloat("soundVolume", currentVolume);
+        PlayerPrefs.SetFloat(volumeName, currentVolume);
     }
 
     public void ChangeSoundVolume(float change)
