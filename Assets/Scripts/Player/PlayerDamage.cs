@@ -39,7 +39,7 @@ public class PlayerDamage : MonoBehaviour
     /// </summary>
     private void DamageEnemy()
     {
-        //if player still in range damage him
+        //if enemy still in range damage him
         if (EnemyInRange())
         {
             enemyHealth.TakeDamage(swordDamage);
